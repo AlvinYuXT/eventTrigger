@@ -28,8 +28,8 @@
   /**
    * Emit an event. You can pass an array as arguments
    * and the callback function will be called with the arguments
-   * @param {any} evt
-   * @param {any} args
+   * @param {String} evt
+   * @param {Array} args
    */
   proto.trigger = function (evt, args) {
     var args = Array.prototype.slice.call(arguments, 1)
@@ -37,15 +37,31 @@
     if (!this._events.hasOwnProperty(evt)) {
       throw new Error('This event has not been listen')
     }
-    for (var i = 0, length = listeners.length; i < length; i++) { 
-      listeners[i].apply(this,args)
+    for (var i = 0, length = listeners.length; i < length; i++) {
+      listeners[i].apply(this, args)
     }
-    // for (var listener in listeners) {
-    //   if(listeners.hasOwnProperty(listener)) {
-    //     this._events[listener].apply(this, args)
-    //   }
-    // }
   }
+
+
+  /**
+   * Remove an event From this._events. 
+   * You can pass the function name to remove the function instead of remove the event
+   * @param {String} evt
+   * @returns Instance of Event 
+   */
+  proto.off = function (evt) {
+    var listeners = this._events,
+      args = Array.prototype.slice.call(arguments, 1)
+    if (!listeners.hasOwnProperty(evt)) {
+      throw new Error('You have not listen this event')
+    }
+    /* 这里打算删除指定的方法，但是没有indexOfFunction */
+    // args? listeners[evt].slice()
+    delete listeners[evt]
+    return this
+  }
+
+  function indexOfFunction() { }
 
   if (typeof define === 'function' && define.amd) {
     define(function () {
