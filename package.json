@@ -4,10 +4,11 @@
   "description": "This is a pub/sub class",
   "main": "Event.js",
   "dependencies": {
+  },
+  "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "mocha"
   },
