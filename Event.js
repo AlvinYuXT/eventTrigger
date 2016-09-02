@@ -1,4 +1,4 @@
-; (function (exports) {
+;(function (exports) {
   'use strict'
 
   /**
@@ -44,10 +44,10 @@
 
 
   /**
-   * Remove an event From this._events. 
+   * Remove an event From this._events.
    * You can pass the function name to remove the function instead of remove the event
    * @param {String} evt
-   * @returns Instance of Event 
+   * @returns Instance of Event
    */
   proto.off = function (evt) {
     var listeners = this._events,
@@ -57,11 +57,28 @@
     }
     /* 这里打算删除指定的方法，但是没有indexOfFunction */
     // args? listeners[evt].slice()
-    delete listeners[evt]
+    if (args !== undefined) {
+      var index = indexOfFunction(listeners[evt], args)
+    }
+    index === -1 ? delete listeners[evt] : listeners[evt].slice(index, index + 1)
     return this
   }
 
-  function indexOfFunction() { }
+
+  /**
+   * Get listenr's index in events
+   * @param {String} listeners
+   * @param {String} evt
+   * @returns {number} Index of the listeners
+   */
+  function indexOfFunction(listeners, evt) {
+    for (var i = 0, length = listeners.length; i < length; i++) {
+      if (evt === listeners[i]) {
+        return i
+      }
+    }
+    return -1
+  }
 
   if (typeof define === 'function' && define.amd) {
     define(function () {
@@ -74,4 +91,4 @@
   else {
     window.Event = Event;
   }
-} (window || {}))
+}(window || {}))
